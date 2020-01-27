@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -19,6 +20,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import modelo.Pais;
+import modelo.Provincias;
 
 /**
  *
@@ -54,7 +56,36 @@ public class PaisFacadeREST extends AbstractFacade<Pais> {
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
-
+//creo el metodo obtener todo post
+    @POST
+    @Path("Obtener")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Pais> Obtener(){
+    return super.findAll();
+    }
+    //metodo crear
+    @POST
+    @Path("Crear")
+   @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON})
+    public String CrearPaisNuevo(@FormParam("idPais") Integer idP ,@FormParam("nombre")String nP,@FormParam("superficie")Double km,@FormParam("lenguaje")String idioma,@FormParam("nroHabitantes") int habi){
+        Pais pa= new Pais();
+        pa.setIdPais(idP);
+        pa.setNombre(nP);
+        pa.setSuperficie(km);
+        pa.setLenguaje(idioma);
+        pa.setNroHabitantes(habi);
+        super.create(pa);
+        return "Crear";
+    }
+    //metodo eliminar
+    @POST
+    @Path("Eliminar")
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+    public String Eliminar(@FormParam("idPais") Integer idP ,@FormParam("nombre")String nP,@FormParam("superficie")Double km,@FormParam("lenguaje")String idioma,@FormParam("nroHabitantes") int habi){
+          Pais pa= super.find(idP);
+        super.remove(pa);
+        return "Editar";
+    }
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

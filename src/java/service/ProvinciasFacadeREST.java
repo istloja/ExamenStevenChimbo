@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -67,6 +68,40 @@ public class ProvinciasFacadeREST extends AbstractFacade<Provincias> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Provincias> findAll() {
         return super.findAll();
+    }
+    //creo metodo obtener
+    @POST
+    @Path("Obtener")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<Provincias> Obtener(){
+    return super.findAll();
+    }
+    //metodo crear
+     @POST
+    @Path("Crear")
+   @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON})
+    public String CrearProvinciaNuevo(@FormParam("idProvincias") Integer idPro ,@FormParam("nroCantones")int Cantones,@FormParam("superficie") double km,@FormParam("region")String region){
+        Provincias pro= new Provincias();
+        pro.setIdProvincias(idPro);
+        pro.setNroCantones(Cantones);
+        pro.setSuperficie(km);
+        pro.setRegion(region);
+        super.create(pro);
+        return "Crear";
+    }
+    //metodo editar
+    @POST
+    @Path("Editar")
+   @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_JSON})
+    public String Editar(@FormParam("idProvincias") Integer idPro ,@FormParam("nroCantones")int Cantones,@FormParam("superficie") double km,@FormParam("region")String region){
+        Provincias pro= new Provincias();
+        pro.setIdProvincias(idPro);
+        pro=super.find(idPro);
+        pro.setNroCantones(Cantones);
+        pro.setSuperficie(km);
+        pro.setRegion(region);
+        super.edit(pro);
+        return "Editar";
     }
 
     @GET
